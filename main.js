@@ -1,7 +1,7 @@
 const h1 = document.querySelector("h1");
 const form = document.querySelector("form");
-const title = document.getElementById("title");
-const feedback = document.getElementById("text");
+const domTitle = document.getElementById("title");
+const domFeedback = document.getElementById("text");
 
 const connectToLocalStorage = (element) =>{
     //put the valu of the HTML element passed into the element parameter as the corresponding item in localStorage idendified by the name attribute
@@ -33,16 +33,20 @@ const goToMainPage = ()=>{//these lines are also used often so it is nice to mak
 }
 
 //calling the function we made above for the title and for the larger textbox below it (called feedback here)
-connectToLocalStorage(title); 
-connectToLocalStorage(feedback);
+connectToLocalStorage(domTitle); 
+connectToLocalStorage(domFeedback);
 
 
 form.addEventListener("submit",(e)=>{ //when ever we submit the form this happens:
     e.preventDefault(); //preventing a refresh to happen
     history.pushState("Thank you", null, "#thankyou") //enabling us tu use the back button to get the #thankyou away from the url
+    localStorage.setItem("subject", "")
+    localStorage.setItem("feedback", "")
     goToThankYou();
     
 })
+
+
 
 window.addEventListener("popstate", (e)=>{ //when ever the user pushes the back or forward button in the browser
     if(e.state === null) goToMainPage(); //this event has a state that can be set with the history.pushState function
@@ -51,3 +55,15 @@ window.addEventListener("popstate", (e)=>{ //when ever the user pushes the back 
 })
 
 if(location.hash === "#thankyou") goToThankYou(); //in case we refresh the Thank you page
+
+/*
+  The challenge is to make an about page that should be accessible either throug a link or a button on the "thank you" page
+  You should be able to do the following:
+    * Go back to the "thank you" page, using the back button in your browser
+    * Go again to the "about" page using the forward button in your browser
+    * Refresh the "about" page and still see the content on that page
+  
+  Extra challenge:
+  Make the About page accessible on both the "thank you" page and the front page
+  (the one with the form) and still be able to go back, forward and refresh.
+*/
